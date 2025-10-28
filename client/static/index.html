@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CommentTree</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>CommentTree</h1>
+    </div>
+    
+    <div class="card">
+      <div class="card-body">
+        <div class="search-container">
+          <input type="text" id="searchInput" class="search-input" placeholder="Поиск по комментариям...">
+          <button id="searchBtn" class="search-btn">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Найти
+          </button>
+        </div>
+        
+        <div id="errorMessage" class="error-message"></div>
+        
+        <div class="comments-container">
+          <ul id="commentsList" class="comments-list"></ul>
+          <div id="noComments" class="no-comments">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 12px; color: var(--gray-400);">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Комментариев пока нет. 
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="new-comment">
+      <div class="card">
+        <div class="card-body">
+          <textarea id="newCommentContent" placeholder="Напишите ваш комментарий..." class="new-comment-textarea"></textarea>
+          <button id="addCommentBtn" class="submit-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+            Добавить комментарий
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
