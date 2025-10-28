@@ -13,6 +13,7 @@ import (
 	"github.com/child6yo/wbtech-l3-comment-tree/internal/logger"
 	"github.com/child6yo/wbtech-l3-comment-tree/internal/repository/postgres"
 	"github.com/child6yo/wbtech-l3-comment-tree/internal/usecase"
+	"github.com/gin-contrib/cors"
 	"github.com/wb-go/wbf/config"
 	"github.com/wb-go/wbf/ginext"
 	"github.com/wb-go/wbf/zlog"
@@ -21,6 +22,7 @@ import (
 const (
 	addCommentRoute      = "/comments"
 	getCommentsTreeRoute = "/comments"
+	deleteComment        = "/comments/:id"
 )
 
 type appConfig struct {
@@ -89,9 +91,10 @@ func main() {
 	mdlw := controller.NewMiddleware(logger.NewLoggerAdapter(lgr))
 
 	srv := ginext.New("")
-	srv.Use(ginext.Logger(), ginext.Recovery(), mdlw.ErrHandlingMiddleware())
+	srv.Use(ginext.Logger(), ginext.Recovery(), mdlw.ErrHandlingMiddleware(), cors.Default())
 	srv.POST(addCommentRoute, cc.NewComment)
 	srv.GET(getCommentsTreeRoute, cc.GetComments)
+	srv.DELETE(deleteComment, cc.DeleteComments)
 
 	httpServer := &http.Server{
 		Addr:    cfg.address,

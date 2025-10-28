@@ -10,6 +10,8 @@ type commentsRepository interface {
 	CreateNewComment(ctx context.Context, comment models.CommentNode) (int, error)
 	CreateAnswer(ctx context.Context, comment models.CommentNode) (int, error)
 	GetFullCommentTree(ctx context.Context) ([]models.CommentNode, error)
+	GetTreeByParent(ctx context.Context, parentID int) ([]models.CommentNode, error)
+	DeleteTreeByParent(ctx context.Context, parentID int) error
 }
 
 // CommentsService создает, удаляет и возвращает комментарии и их деревья.
@@ -38,12 +40,20 @@ func (cs *CommentsService) GetCommentTree(ctx context.Context, id int) ([]*model
 
 	if id == 0 {
 		coms, err = cs.repo.GetFullCommentTree(ctx)
-		if err != nil {
-			return nil, err
-		}
+	} else {
+		coms, err = cs.repo.GetTreeByParent(ctx, id)
+	}
+
+	if err != nil {
+		return nil, err
 	}
 
 	return createTree(coms), nil
+}
+
+// DeleteTreeByParent удаляет все дочерние комментарии, начиная с родительского.
+func (cs *CommentsService) DeleteTreeByParent(ctx context.Context, id int) error {
+	return cs.repo.DeleteTreeByParent(ctx, id)
 }
 
 func createTree(coms []models.CommentNode) []*models.CommentNode {

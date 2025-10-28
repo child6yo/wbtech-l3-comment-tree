@@ -12,6 +12,7 @@ import (
 type commentsService interface {
 	CreateComment(ctx context.Context, comment models.CommentNode) (int, error)
 	GetCommentTree(ctx context.Context, id int) ([]*models.CommentNode, error)
+	DeleteTreeByParent(ctx context.Context, id int) error
 }
 
 // CommentsController http контроллер комментариев.
@@ -77,4 +78,25 @@ func (cc *CommentsController) GetComments(c *ginext.Context) {
 	}
 
 	c.JSON(200, coms)
+}
+
+// DeleteComments обрабатывает DELETE /comments/{id} — удаление комментария и всех вложенных под ним.
+func (cc *CommentsController) DeleteComments(c *ginext.Context) {
+	parent := c.Param("id")
+
+	id, err := strconv.Atoi(parent)
+	if err != nil {
+		c.JSON(400, ginext.H{"error": "invalid request: " + err.Error()})
+		_ = c.Error(fmt.Errorf("validation error: %v", err))
+		return
+	}
+
+	err = cc.cs.DeleteTreeByParent(c.Request.Context(), id)
+	if err != nil {
+		c.JSON(500, ginext.H{"error": "server error: " + err.Error()})
+		_ = c.Error(fmt.Errorf("server error: %v", err))
+		return
+	}
+
+	c.JSON(200, nil)
 }
