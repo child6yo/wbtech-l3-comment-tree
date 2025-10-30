@@ -10,6 +10,7 @@ git clone https://github.com/child6yo/wbtech-l3-comment-tree
 docker compose up 
 ```
 - практически вся система конфигурируема через .env
+- UI будет доступен по адресу localhost:80
 
 ## API
 
